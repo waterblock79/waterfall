@@ -150,16 +150,16 @@
               <v-stepper-items class="elevation-0">
                 <v-stepper-content step="1">
                   <v-card class="mb-12 elevation-0" color="red" height="200px">
-                    下载 Windows 平台的 Platform Tools :
+                    下载 {{ GetOS() }} 平台的 Platform Tools :
                     <b
                       ><a
                         @click="
                           require('electron').shell.openExternal(
-                            'https://dl.google.com/android/repository/platform-tools-latest-windows.zip'
+                            'https://dl.google.com/android/repository/'+platformTools[GetOS()]
                           )
                         "
                         class="white--text"
-                        >platform-tools-latest-windows.zip</a
+                        >{{ platformTools[GetOS()] }}</a
                       ></b
                     >.<br />
                     ( 您同时需要同意一份来自 Google 的条款及条件! )
@@ -188,17 +188,15 @@
                 <v-stepper-content step="3">
                   <v-card class="mb-12 elevation-0" color="red" height="200px">
                     请在对应的选择框中选择刚才解压的文件夹中的
-                    <code>adb.exe</code> 或 <code>fastboot.exe</code> ,
+                    <code>adb{{GetOS()=="Windows"?".exe":""}}</code> 或 <code>fastboot{{GetOS()=="Windows"?".exe":""}}</code> ,
                     选择完成后, 点击继续.
                     <v-file-input
                       class="mt-3"
-                      accept=".exe"
-                      label="选择 adb.exe"
+                      label="选择 adb"
                       v-model="selectAdb"
                     ></v-file-input>
                     <v-file-input
-                      accept=".exe"
-                      label="选择 fastboot.exe"
+                      label="选择 fastboot"
                       v-model="selectFastboot"
                     ></v-file-input>
                   </v-card>
@@ -237,6 +235,7 @@
 <script>
 const execSync = require("child_process").execSync;
 const exec = require("child_process").exec;
+const platform = require('process').platform; 
 import AboutDevices from "./components/AboutDevices.vue";
 import AboutProject from "./components/AboutProject.vue";
 import ApkManager from "./components/APKManager.vue";
@@ -270,6 +269,11 @@ export default {
       userInputFilePath: [],
       drawer: false,
       e1: 1,
+      platformTools: {
+        "Windows": "platform-tools-latest-windows.zip",
+        "MacOS": "platform-tools-latest-darwin.zip",
+        "Linux": "platform-tools-latest-linux.zip",
+      },
       selectAdb: [],
       selectFastboot: [],
       configPathWarning: false,
@@ -352,6 +356,18 @@ export default {
         `"` + this.selectFastboot.path + `"`
       );
     },
+    GetOS: function () {
+      switch(platform) { 
+        case 'darwin':  
+          return "MacOS"  
+        case 'win32':
+          return 'Windows'
+        case 'linux':
+          return 'Linux'
+        default:  
+            return platform
+      }
+    }
   },
 };
 </script>
