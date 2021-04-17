@@ -155,7 +155,8 @@
                       ><a
                         @click="
                           require('electron').shell.openExternal(
-                            'https://dl.google.com/android/repository/'+platformTools[GetOS()]
+                            'https://dl.google.com/android/repository/' +
+                              platformTools[GetOS()]
                           )
                         "
                         class="white--text"
@@ -188,8 +189,11 @@
                 <v-stepper-content step="3">
                   <v-card class="mb-12 elevation-0" color="red" height="200px">
                     请在对应的选择框中选择刚才解压的文件夹中的
-                    <code>adb{{GetOS()=="Windows"?".exe":""}}</code> 或 <code>fastboot{{GetOS()=="Windows"?".exe":""}}</code> ,
-                    选择完成后, 点击继续.
+                    <code>adb{{ GetOS() == "Windows" ? ".exe" : "" }}</code> 或
+                    <code
+                      >fastboot{{ GetOS() == "Windows" ? ".exe" : "" }}</code
+                    >
+                    , 选择完成后, 点击继续.
                     <v-file-input
                       class="mt-3"
                       label="选择 adb"
@@ -203,7 +207,7 @@
                   <template
                     v-if="
                       this.selectFastboot.path != undefined &&
-                      this.selectAdb.path != undefined
+                        this.selectAdb.path != undefined
                     "
                   >
                     <v-card-actions>
@@ -235,7 +239,9 @@
 <script>
 const execSync = require("child_process").execSync;
 const exec = require("child_process").exec;
-const platform = require('process').platform; 
+const platform = require("process").platform;
+require("./assets/ui.scss");
+import "material-design-icons/iconfont/material-icons.css";
 import AboutDevices from "./components/AboutDevices.vue";
 import AboutProject from "./components/AboutProject.vue";
 import ApkManager from "./components/APKManager.vue";
@@ -251,17 +257,16 @@ export default {
     FileManager,
   },
 
-  data: function () {
+  data: function() {
     return {
       adb: null,
       fastboot: null,
-      appLoading: true,
       devices: [],
       deviceChosen: "0",
       functionChosen: 0,
       appFunctions: [
         { text: "APK Manager", icon: "mdi-application" },
-        { text: "Files Manager", icon: "mdi-file", disable: true  },
+        { text: "Files Manager", icon: "mdi-file" },
         { text: "Fastboot", icon: "mdi-android-debug-bridge", disable: true },
       ],
       adbInstalled: true,
@@ -270,9 +275,9 @@ export default {
       drawer: false,
       e1: 1,
       platformTools: {
-        "Windows": "platform-tools-latest-windows.zip",
-        "MacOS": "platform-tools-latest-darwin.zip",
-        "Linux": "platform-tools-latest-linux.zip",
+        Windows: "platform-tools-latest-windows.zip",
+        MacOS: "platform-tools-latest-darwin.zip",
+        Linux: "platform-tools-latest-linux.zip",
       },
       selectAdb: [],
       selectFastboot: [],
@@ -280,7 +285,7 @@ export default {
     };
   },
 
-  created: function () {
+  created: function() {
     //Config Automatically If No Config
     if (
       localStorage.getItem("ADBPath") == null ||
@@ -295,7 +300,6 @@ export default {
     //Check
     this.CheckADB();
     this.GetDevices();
-    this.appLoading = false;
   },
 
   watch: {
@@ -305,11 +309,11 @@ export default {
   },
 
   methods: {
-    CloseWindow: function () {
+    CloseWindow: function() {
       const { ipcRenderer } = require("electron");
       ipcRenderer.send("app:quit");
     },
-    GetDevices: function () {
+    GetDevices: function() {
       this.devices = [];
       execSync(`${this.adb} devices`)
         .toString()
@@ -326,11 +330,11 @@ export default {
       //error:"device undefind" if using ForEach
       return;
     },
-    ChooseDevice: function (index) {
+    ChooseDevice: function(index) {
       this.deviceChosen = index;
       return;
     },
-    CheckADB: function () {
+    CheckADB: function() {
       exec(`${this.adb} --version`, (error) => {
         if (error) {
           this.adbInstalled = false;
@@ -349,28 +353,25 @@ export default {
       });
       return;
     },
-    GetUserInputPath: function () {
+    GetUserInputPath: function() {
       localStorage.setItem("ADBPath", `"` + this.selectAdb.path + `"`);
       localStorage.setItem(
         "FastbootPath",
         `"` + this.selectFastboot.path + `"`
       );
     },
-    GetOS: function () {
-      switch(platform) { 
-        case 'darwin':  
-          return "MacOS"  
-        case 'win32':
-          return 'Windows'
-        case 'linux':
-          return 'Linux'
-        default:  
-            return platform
+    GetOS: function() {
+      switch (platform) {
+        case "darwin":
+          return "MacOS";
+        case "win32":
+          return "Windows";
+        case "linux":
+          return "Linux";
+        default:
+          return platform;
       }
-    }
+    },
   },
 };
 </script>
-
-<style scoped>
-</style>

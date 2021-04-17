@@ -168,7 +168,7 @@ export default {
 
   props: ["deviceName"],
 
-  data: function () {
+  data: function() {
     return {
       adb: localStorage.getItem("ADBPath"),
       fastboot: localStorage.getItem("FastbootPath"),
@@ -186,7 +186,7 @@ export default {
     };
   },
 
-  created: function () {
+  created: function() {
     this.GetProp();
     this.GetBattery();
     this.GetRAM();
@@ -195,28 +195,26 @@ export default {
   },
 
   methods: {
-    GetProp: function () {
+    GetProp: function() {
       execSync(`${this.adb} -s ${this.deviceName} shell getprop`)
         .toString()
         .split("\n")
         .forEach((item) => {
           if (!item.match("product")) return;
-          let infoName = item
-            .match(/\[(.+?)\]/g)[0]
-            .replace("[", "")
-            .replace("]", ""); //"[ab]: [cd]" ==match==> "[ab]" ==replace==> "ab"
-          let infoValue = item
-            .match(/\[(.+?)\]/g)[1]
-            .replace("[", "")
-            .replace("]", "");
-          this.deviceInfo.push({ Name: infoName, Value: infoValue });
+          let infoName = "";
+          infoName = item.substring(item.indexOf("[")+1, item.indexOf("]"));
+          let infoValue = "";
+          infoValue = item.substring(item.lastIndexOf("[")+1, item.lastIndexOf("]"));
+          this.deviceInfo.push({ 'Name': infoName, 'Value': infoValue });
           return;
         });
       return;
     },
-    GetBattery: function () {
+    GetBattery: function() {
       this.batteryInfo = YAML.parse(
-        execSync(`${this.adb} -s ${this.deviceName} shell dumpsys battery`).toString()
+        execSync(
+          `${this.adb} -s ${this.deviceName} shell dumpsys battery`
+        ).toString()
       )["Current Battery Service state"];
       this.batteryInfoFormatted = {
         电池技术: this.batteryInfo["technology"],
@@ -224,9 +222,11 @@ export default {
         电池电压: `${this.batteryInfo["voltage"] / 1000} V`,
       };
     },
-    GetRAM: function () {
+    GetRAM: function() {
       this.RAMInfo = YAML.parse(
-        execSync(`${this.adb} -s ${this.deviceName} shell cat /proc/meminfo`).toString()
+        execSync(
+          `${this.adb} -s ${this.deviceName} shell cat /proc/meminfo`
+        ).toString()
       );
       this.RAMInfoFormatted = {
         内存总数: this.RAMInfo["MemTotal"],
@@ -234,19 +234,23 @@ export default {
         空闲内存: this.RAMInfo["MemFree"],
       };
     },
-    GNACTG: function (p) {
+    GNACTG: function(p) {
       return Math.round(p.match(/[0-9]+/) / 100000) / 10;
       //Get Num And Convert To GB
     },
-    GetStorage: function () {
-      this.storageInfo = execSync(`${this.adb} -s ${this.deviceName} shell df -h /sdcard`)
+    GetStorage: function() {
+      this.storageInfo = execSync(
+        `${this.adb} -s ${this.deviceName} shell df -h /sdcard`
+      )
         .toString()
         .split("\n")[1]
         .split(" ")
         .filter((x) => {
           return x != "";
         });
-      let rootStorageInfo = execSync(`${this.adb} -s ${this.deviceName} shell df -h /`)
+      let rootStorageInfo = execSync(
+        `${this.adb} -s ${this.deviceName} shell df -h /`
+      )
         .toString()
         .split("\n")[1]
         .split(" ")
@@ -263,7 +267,7 @@ export default {
         Root目录剩余容量: rootStorageInfo[3],
       };
     },
-    GetScreen: function () {
+    GetScreen: function() {
       this.screenInfo = YAML.parse(
         execSync(
           `${this.adb} -s ${this.deviceName} shell wm density && ${this.adb} -s ${this.deviceName} shell wm size`

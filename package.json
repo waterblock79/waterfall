@@ -1,7 +1,7 @@
 {
   "name": "waterfall-project",
   "author": "waterblock79",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Waterfall Project Alpha.",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -16,6 +16,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "electron-store": "^7.0.2",
+    "material-design-icons": "^3.0.1",
     "node-fetch": "^2.6.1",
     "vue": "^2.6.11",
     "vuetify": "^2.4.0",
