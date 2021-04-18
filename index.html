@@ -1,108 +1,24 @@
 <html>
 
 <head>
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif; 
-      background: rgb(236, 236, 236); 
-      padding: 2em;
-    }
-
-    .head {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: rgb(64, 64, 64);
-      width: 100%;
-      height: 3em;
-      font-size: 1.25em;
-      z-index: 128;
-      opacity: 0.75;
-    }
-
-    .headTitle {
-      line-height: 1em;
-      margin-left: 1.5em;
-      color: white;
-      font-weight: lighter;
-    }
-
-    .main {
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgb(236, 236, 236);
-    }
-
-    .mainText {
-      position: absolute;
-      left: 10%;
-      top: 30%;
-    }
-
-    .mainPreview {
-      position: absolute;
-      background: url(./assets/Preview.png) no-repeat;
-      background-size: cover;
-      width: 60%;
-      height: 60%;
-      bottom: 0%;
-      right: -10%;
-      border-radius: 8px;
-      box-shadow: -20px -20px 32px #dddddd;
-    }
-
-    .mainBtn {
-      padding: 0.5em 1em 0.5em 1em;
-      border-radius: 8px;
-      text-decoration: none;
-      background: #448AFF;
-      color: white;
-      transition: background 0.25s;
-    }
-
-    .mainBtn:hover {
-      background: #2979FF;
-    }
-
-    @media (max-width: 950px) {
-      .mainText{
-        font-size: 125%;
-        top:10%;
-        left:5%;
-      }
-      
-      .mainPreview{
-        left:5%;
-        bottom:-20%;
-        width: 100%;
-        height: 55%;
-        box-shadow:none;
-      }
-    }
-  </style>
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="assets/ui.css" rel="stylesheet" />
 </head>
 
-<body>
-  <div class="head">
-    <p class="headTitle" onclick=" window.location='index.html'; ">Waterfall Project</p>
+<body style="overflow:hidden">
+  <div class="index-app">
+    <h1>Waterfall Project</h1>
+    <h3>开源、纯净、美观的安卓设备管理器。</h3>
+    <button class="primary white mr-2" onclick="go('/download.html')">
+      <i class="material-icons center-y mr-1">cloud_download</i>下载</button>
+    <button class="primary white" onclick="go('/about.html')">
+      <i class="material-icons center-y mr-1">info</i>关于</button>
   </div>
-  <div class="main">
-    <div class="mainText">
-      <h1 style="font-weight: lighter;">Waterfall<sub>Project</sub></h1>
-      <p>更美观、更纯净、更强大的开源安卓设备管理器。</p>
-    </div>
-    <div class="mainPreview"></div>
-  </div>
-  <div class="main">
-    <div class="mainText">
-      <h1 style="font-weight: lighter;">Waterfall<sub>Project</sub></h1>
-      <p>更美观、更纯净、更强大的开源安卓设备管理器。</p><br />
-      <a class="mainBtn" href="about.html">关于项目</a>
-      <a style="margin-left:1em" class="mainBtn" href="download.html">下载</a>
-    </div>
-    <div class="mainPreview"></div>
-  </div>
+  <div class="index-preview"></div>
+  <script>
+    const go = (link) => { window.location.href = link };
+  </script>
 </body>

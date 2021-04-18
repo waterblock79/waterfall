@@ -3,74 +3,36 @@
 <head>
   <meta name="viewport"
     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif; 
-      background: rgb(236, 236, 236); 
-      padding: 2em;
-    }
-
-    .head {
-      position: fixed;
-      top: 0;
-      left: 0;
-      background: rgb(64, 64, 64);
-      width: 100%;
-      height: 3em;
-      font-size: 1.25em;
-      z-index: 128;
-      opacity: 0.75;
-    }
-
-    .headTitle {
-      line-height: 1em;
-      margin-left: 1.5em;
-      color: white;
-      font-weight: lighter;
-    }
-
-    .main {
-      position: relative;
-      left: 0;
-      width: 80%;
-      height: 100%;
-      margin: 0;
-    }
-
-    .mainText {
-      position: relative;
-      left: 10%;
-      top: 30%;
-      word-wrap: break-word;
-      word-break: normal;
-      margin-bottom: 20%;
-    }
-
-    @media (max-width: 950px) {
-      .mainText {
-        font-size: 125%;
-        top: 20%;
-        left: 5%;
-      }
-    }
-  </style>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="assets/ui.css" rel="stylesheet" />
 </head>
 
 <body>
-  <div class="head">
-    <p class="headTitle" onclick=" window.location='index.html'; ">Waterfall Project</p>
+  <div class="download-app">
+    <h1>下载 Waterfall Project</h1>
+    <small>目前 Waterfall Project 仅提供 Windows 版本，因为不同操作系统间的命令会有些许差别，但我不能在每个操作系统进行分别的实验。</small>
+    <h3>从 Github Release 下载
+      <span class="label ml-2 label-green">源码和额外的绿色版程序</span>
+    </h3>
+    <button onclick="go(`https://github.com/waterblock79/waterfall`)">
+      <i class="material-icons center-y mr-1">get_app</i>
+      前往 Lastest 版本页面
+    </button><br />
+    <button onclick="go(`https://github.com/waterblock79/waterfall/releases/latest`)" class="mt-2">
+      <i class="material-icons center-y mr-1">code</i>
+      前往 Github 仓库
+    </button><br/><br/>
+    <h3>从 蓝奏云 下载
+      <span class="label ml-2 label-primary">适合中国大陆地区的快速镜像</span>
+      <span class="label ml-2 label-primary">密码：waterfall</span>
+    </h3>
+    <button onclick="go(`https://www.lanzous.com/b0brbma4b`)" class="mt-2">
+      <i class="material-icons center-y mr-1">cloud_download</i>
+      前往 蓝奏云 地址
+    </button><br/>
   </div>
-  <div class="main">
-    <div class="mainText">
-      <h1>下载 Waterfall<sub>Project</sub></h1>
-      <sub>这是一个 Alpha 版本，如果遇到了问题，请发布 issue！</sub>
-      <h2>从 Github Releases</h2>
-      <a href="https://github.com/waterblock79/waterfall/releases/" style="color:#2979FF;text-decoration: none;">
-        waterblock79 / waterfall</a>
-      <h2>从 Lanzous ( 适合中国大陆地区网络的用户 )</h2>
-      <a href="https://wb79.lanzous.com/b0brbma4b" style="color:#2979FF;text-decoration: none;">
-        地址 : https://wb79.lanzous.com/b0brbma4b<br/>
-        密码 : waterfall</a>
-    </div>
-  </div>
+  <script>
+    const go = (link) => { window.location.href = link };
+  </script>
 </body>
