@@ -276,8 +276,11 @@ textarea{
 
 @media (prefers-color-scheme: dark) {
   body {
-      background-color: black;
+      background-color: #111111;
       color: white;
+  }
+  li{
+    background-color:#111111 !important;
   }
 }
 
@@ -320,13 +323,4 @@ textarea{
   width:3em;
   border-radius: 100%;
   margin-right: 0.5em;
-}
-
-.about-preview{
-  width: auto;
-  height: auto;
-  border:solid #DDDDDD;
-  border-radius: 10px;
-  max-width: 10em;
-  max-height: 10em;  
 }
