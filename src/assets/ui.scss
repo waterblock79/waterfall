@@ -28,6 +28,12 @@ li:active {
   background: rgba(0, 0, 0, 15%);
 }
 
+li[selected]{
+  background-color:rgb(25,118,210,20%);
+  font-weight: 500;
+  transition: background-color 0.15s;
+}
+
 /* Button : <button> */
 
 button {
@@ -62,6 +68,14 @@ button:active {
   background: none;
 }
 
+button[disabled]{
+  color:rgba(128, 128, 128, 0.65) !important;
+}
+
+button[disabled]:hover{
+  background: none;
+}
+
 /* For FileInputs */
 
 /* 
@@ -78,12 +92,14 @@ button:active {
 /* Dialog */
 
 /*
+<transition name="dialog">
 <div class="dialog">
   <div class="dialog-overlay"/>
   <div class="dialog-content card">
     card content
   </div>
 </div>
+</transition>
 */
 
 .dialog {
@@ -110,6 +126,28 @@ button:active {
 .dialog-content {
   z-index: 314;
   margin: auto;
+}
+
+/* Input */
+
+input[type="text"] {
+  height: 1.5em;
+  outline: none;
+  border: none;
+  padding: 2px;
+  border-bottom: solid 1.75px;
+  border-bottom-color: rgb(0, 0, 0, 15%);
+  transition: border-bottom-color 0.3s;
+}
+
+input[type="text"]:focus {
+  border-bottom-color: #1976d2;
+}
+
+input[type="checkbox"]{
+  height: 1em;
+  width: 1em;
+  background-color:#1976d2;
 }
 
 /* Card */
@@ -139,7 +177,7 @@ button:active {
   text-align: right;
 }
 
-/* Bottom Active */
+/* Bottom Active ( show something in bottom of the page )*/
 
 .bottom-active {
   position: fixed;
@@ -153,6 +191,36 @@ button:active {
   padding-left: 1em;
 }
 
+/* Flex */
+
+.flex{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-grow{
+  flex-grow:1;
+}
+
+.flex-grow-half{
+  flex-grow:.5;
+}
+
+/* Progress */
+
+progress{
+  border:none;
+  height: 0.45em;
+}
+
+progress::-webkit-progress-bar
+{
+       background-color:#bad2ec;
+}
+progress::-webkit-progress-value
+{
+     background-color:#1867c0;
+}
 
 /* Sth else */
 
@@ -166,11 +234,12 @@ button:active {
 }
 
 .font-mono {
-  font-family: "Courier New", Courier, monospace;
+  font-family: Consolas, "Courier New", Courier, monospace;
 }
 
 .material-icons {
   user-select: none;
+  vertical-align: middle;
 }
 
 /* Padding and Margin - Top,Bottom,Left,Right - between 0 and 64*/
@@ -213,8 +282,38 @@ button:active {
   }
 }
 
+/* Font Style */
+
+.font-light{
+  font-weight:lighter;
+}
+
+.font-bold{
+  font-weight:bold;
+}
+
+.font-bolder{
+  font-weight: bolder;
+}
+
+.font-small{
+  font-size: small;
+}
+
+.font-smaller{
+  font-size: smaller;
+}
+
+.font-large{
+  font-size: large;
+}
+
+.font-larger{
+  font-size: larger;
+}
+
 $color: (white, #ffffff), (gray, gray), (primary, #1976d2), (warning, #ffc107),
-  (error, #f44336);
+  (error, #f44336), (black, #010101);
 
 @each $name, $value in $color {
   .#{$name} {
@@ -246,33 +345,33 @@ $color: (white, #ffffff), (gray, gray), (primary, #1976d2), (warning, #ffc107),
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 10px;
   background: #dddddd;
   transition: background 1s;
 }
 
-/* Opacity Transition */
+/* Translation */
 
-.opa-trans-5{
-  transition: opacity 0.05s;
+.dialog-enter-active{
+  animation: dialog-card-in 0.25s cubic-bezier(.25,.75,.25,1);
 }
 
-.opa-trans-15{
-  transition: opacity 0.15s;
+.dialog-leave-active{
+  animation: dialog-card-in 0.25s reverse;
 }
 
-.opa-trans-25{
-  transition: opacity 0.25s;
+.bottom-enter-active{
+  animation: dialog-card-in 0.15s cubic-bezier(.25,.75,.25,1);
 }
 
-.opa-trans-50{
-  transition: opacity 0.5s;
+.bottom-leave-active{
+  animation: dialog-card-in 0.15s reverse;
 }
 
-.opa-trans-75{
-  transition: opacity 0.75s;
-}
-
-.opa-trans-100{
-  transition: opacity 1.00s;
+@keyframes dialog-card-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

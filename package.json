@@ -1,7 +1,7 @@
 {
   "name": "waterfall-project",
   "author": "waterblock79",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Waterfall Project Alpha.",
   "scripts": {
     "serve": "vue-cli-service serve",

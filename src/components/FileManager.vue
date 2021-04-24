@@ -50,8 +50,8 @@
         <span>{{ item.name }}</span>
       </li>
       <!-- Context Menu -->
-      <transition name="ot15">
-        <div class="dialog opa-trans-15" v-show="contextmenu.show">
+      <transition name="dialog">
+        <div class="dialog" v-show="contextmenu.show">
           <div class="dialog-overlay" @click="contextmenu.show = false" />
           <div class="dialog-content card" style="width:50%;">
             <p class="card-title">{{ contextmenu.item.name }}</p>
@@ -106,8 +106,8 @@
             </li>
           </div>
           <!-- RemoveFile Alert -->
-          <transition name="ot15">
-            <div class="dialog opa-trans-15" v-show="showRemoveFile">
+          <transition name="dialog">
+            <div class="dialog" v-show="showRemoveFile">
               <div class="dialog-overlay" />
               <div class="dialog-content card" style="width:60%">
                 <p class="card-title">您确定吗</p>
@@ -137,8 +137,8 @@
       </transition>
     </ul>
     <!-- Upload File Dialog -->
-    <transition name="ot15">
-      <div class="dialog opa-trans-15" v-show="showPushFile">
+    <transition name="dialog">
+      <div class="dialog" v-show="showPushFile">
         <div class="dialog-overlay" />
         <div class="dialog-content card">
           <div class="card-title">推送文件</div>
@@ -154,8 +154,8 @@
       </div>
     </transition>
     <!-- Copy -->
-    <transition name="ot15">
-      <div class="bottom-active opa-trans-15" v-show="copyFile != false">
+    <transition name="bottom">
+      <div class="bottom-active" v-show="copyFile != false">
         已选择 {{ copyFile.name }}
         <button
           class="pull-right button-icon"
@@ -189,7 +189,7 @@ export default {
     return {
       adb: localStorage.getItem("ADBPath"),
       fastboot: localStorage.getItem("FastbootPath"),
-      dirName: "/storage",
+      dirName: "/",
       dirFiles: [],
       pushFilesChosen: [],
       pushFilesOutput: "",
@@ -202,7 +202,7 @@ export default {
   },
 
   created: function() {
-    this.ChangeDir("./sdcard0");
+    this.ChangeDir("./sdcard");
   },
 
   methods: {

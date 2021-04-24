@@ -29,6 +29,10 @@
             </template>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
+          <v-list-item @click="showWirelessConnect = true">
+            <span class="material-icons mr-2 color-gray">cast_connected</span
+            >无线连接到设备
+          </v-list-item>
         </v-list>
       </v-menu>
       <v-btn icon color="blue" @click="GetDevices">
@@ -117,6 +121,21 @@
       </template>
       <!--End-->
     </v-main>
+    <transition name="dialog">
+      <div class="dialog" v-show="showWirelessConnect">
+        <div class="dialog-overlay" />
+        <div class="dialog-content card">
+          <span class="card-title">无线连接到设备</span>
+          <div class="card-content flex">
+            <input type="text" v-model="wirelessConnectAddress" placeholder="IP地址:端口" class="flex-grow"/>
+          </div>
+          <div class="card-active">
+            <button class="color-primary" @click="showWirelessConnect=false">取消</button>
+            <button class="color-primary" @click="WirelessConnect(wirelessConnectAddress)">连接</button>
+          </div>
+        </div>
+      </div>
+    </transition>
     <!--If Fastboot or ADB not installed-->
     <template v-if="!adbInstalled || !fastbootInstalled">
       <v-row justify="center">
@@ -282,6 +301,8 @@ export default {
       selectAdb: [],
       selectFastboot: [],
       configPathWarning: false,
+      showWirelessConnect: false,
+      wirelessConnectAddress: null,
     };
   },
 
@@ -359,6 +380,17 @@ export default {
         "FastbootPath",
         `"` + this.selectFastboot.path + `"`
       );
+    },
+    WirelessConnect: function(e){
+      exec(`${this.adb} connect ${e}`, (error) => {
+        if (error) {
+          alert(`Σ(っ °Д °;)っ⚠\n${error}`);
+          this.showWirelessConnect = false;
+          return;
+        }
+        this.showWirelessConnect = false;
+        return;
+      });
     },
     GetOS: function() {
       switch (platform) {
