@@ -61,7 +61,7 @@
               <span class="material-icons center-y">save</span>
               <b class="mx-2">占用空间</b>
               <span
-                >{{ contextmenu.item.size }} 字节（
+                >{{ contextmenu.item.size }} 字节（bit）（
                 {{ (contextmenu.item.size / 1000 / 1024).toFixed(2) }} MB
                 ）</span
               >

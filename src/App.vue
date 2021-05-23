@@ -3,7 +3,7 @@
     <!--Main-->
     <v-app-bar app color="white" elevate-on-scroll :elevation="3">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Waterfall Project</v-toolbar-title>
+      <v-toolbar-title>瀑布安卓设备管理器</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu bottom right>
         <template v-slot:activator="{ on }">
@@ -12,7 +12,7 @@
             <template v-if="devices[deviceChosen] != undefined">{{
               devices[deviceChosen].title
             }}</template>
-            <template v-else>No Devices</template>
+            <template v-else>没有侦测到设备</template>
           </v-chip>
         </template>
         <v-list>
@@ -31,7 +31,7 @@
           </v-list-item>
           <v-list-item @click="showWirelessConnect = true">
             <span class="material-icons mr-2 color-gray">cast_connected</span
-            >无线连接到设备
+            >Wifi连结模式
           </v-list-item>
         </v-list>
       </v-menu>
@@ -45,8 +45,13 @@
           <!--About Phone-->
           <v-list-item>
             <v-list-item-avatar>
-              <v-icon>mdi-android</v-icon>
+              <v-img
+              max-height="300"
+              max-width="500"
+              src="https://upload.cc/i1/2021/05/23/82jZQR.png"
+              ></v-img>			  
             </v-list-item-avatar>
+			<v-text>瀑布安卓设备管理器</v-text>
             <v-list-item-content>
               <template v-if="devices.length > 0">
                 {{ devices[deviceChosen].title }}
@@ -73,7 +78,7 @@
               <v-icon>mdi-information-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>About Project</v-list-item-title>
+              <v-list-item-title>关于</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <!--End-->
@@ -101,17 +106,17 @@
           <template v-slot:activator="{ on, attrs }">
             <v-container fill-height justify-center v-bind="attrs" v-on="on">
               <v-icon style="font-size: 500%"> mdi-progress-question </v-icon>
-              <div class="text-h4 ml-3">No Devices!</div>
+              <div class="text-h4 ml-3">咦，设备去哪了呢？Σ(っ °Д °;)っ口</div>
             </v-container>
           </template>
           <span>
             连接设备后，请点击<v-icon color="white" class="mx-2"
               >mdi-cached</v-icon
             >刷新设备列表。<br />
-            若刷新后仍未出现您的设备，请确保打开了开发者模式：<br />
-            1 进入「设置」中的「关于手机」，连续点击十次「版本号」。<br />
-            2 进入「开发者选项」（ 请善用设置中的「搜索」功能
-            ），确保其中的「USB调试」已开启。<br />
+            若刷新后仍未出现您的设备，请确保设备稳定连接电脑并打开了开发者模式：<br />
+            Step1.进入「设置」中的「关于手机」，连续点击十次「安卓版本号」。<br />
+            Step2.进入「开发者选项」（ 请善用设置中的「搜索」功能
+            ），确保其中的「USB调试」功能已开启。<br />
           </span>
         </v-tooltip>
       </template>
@@ -125,9 +130,9 @@
       <div class="dialog" v-show="showWirelessConnect">
         <div class="dialog-overlay" />
         <div class="dialog-content card">
-          <span class="card-title">无线连接到设备</span>
+          <span class="card-title">Wifi连结</span>
           <div class="card-content flex">
-            <input type="text" v-model="wirelessConnectAddress" placeholder="IP地址:端口" class="flex-grow"/>
+            <input type="text" v-model="wirelessConnectAddress" placeholder="请输入IP地址:端口号" class="flex-grow"/>
           </div>
           <div class="card-active">
             <button class="color-primary" @click="showWirelessConnect=false">取消</button>
@@ -142,10 +147,10 @@
         <v-overlay :z-index="79" :opacity="0.75">
           <v-card elevation="6" color="red" class="pa-5">
             <v-list-item-title class="headline mr-16">
-              出<b>错</b>了 !
+              <b>出错</b>了 !
             </v-list-item-title>
             <v-card-subtitle class="subtitle-1 mr-16">
-              你的 Platform Tools <b>没有成功的配置</b> !
+              你<b>没有成功的配置</b> Platform Tools  !
             </v-card-subtitle>
             <v-stepper v-model="e1" class="red elevation-0">
               <v-stepper-header class="elevation-0">
@@ -190,7 +195,7 @@
                   <v-spacer></v-spacer>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn text @click="e1 = 2"> 继续 </v-btn>
+                    <v-btn text @click="e1 = 2"> ➜下一步➜ </v-btn>
                   </v-card-actions>
                 </v-stepper-content>
 
@@ -201,7 +206,7 @@
                   </v-card>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn text @click="e1 = 3"> 继续 </v-btn>
+                    <v-btn text @click="e1 = 3"> ➜下一步➜ </v-btn>
                   </v-card-actions>
                 </v-stepper-content>
 
@@ -215,11 +220,11 @@
                     , 选择完成后, 点击继续.
                     <v-file-input
                       class="mt-3"
-                      label="选择 adb"
+                      label="选择 ADB.exe"
                       v-model="selectAdb"
                     ></v-file-input>
                     <v-file-input
-                      label="选择 fastboot"
+                      label="选择 Fastboot.exe"
                       v-model="selectFastboot"
                     ></v-file-input>
                   </v-card>
@@ -238,13 +243,13 @@
                           e1 = 4;
                         "
                       >
-                        继续
+                        ➜已完成➜
                       </v-btn>
                     </v-card-actions>
                   </template>
                 </v-stepper-content>
                 <v-stepper-content step="4">
-                  配置完成！请刷新以应用更改！
+                  配置完成！请重新启动本应用！
                 </v-stepper-content>
               </v-stepper-items>
             </v-stepper>
@@ -284,9 +289,9 @@ export default {
       deviceChosen: "0",
       functionChosen: 0,
       appFunctions: [
-        { text: "APK Manager", icon: "mdi-application" },
-        { text: "Files Manager", icon: "mdi-file" },
-        { text: "Fastboot", icon: "mdi-android-debug-bridge", disable: true },
+        { text: "安装APK 管理", icon: "mdi-application" },
+        { text: "手机档案管理", icon: "mdi-file" },
+        { text: "Fastboot刷机", icon: "mdi-android-debug-bridge", disable: true },
       ],
       adbInstalled: true,
       fastbootInstalled: true,

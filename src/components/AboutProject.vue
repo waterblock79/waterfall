@@ -1,21 +1,24 @@
 <template>
   <v-app>
-    <div class="ma-10 text-center font-weight-light">
+    <div class="ma-12 text-center font-weight-light">
+	<a href="https://waterfall.js.org/" target="_blank">
       <v-avatar
-        ><v-icon x-large color="primary"
-          >mdi-android-debug-bridge</v-icon
-        ></v-avatar
-      >
-      <h2 class="font-weight-light">Waterfall Project <sub>Alpha</sub></h2>
-      <p>By waterblock79</p>
-      <p>更美观、更纯净、更强大的开源安卓设备管理器。</p>
+        ><v-img
+  max-height="300"
+  max-width="500"
+  src="https://upload.cc/i1/2021/05/23/82jZQR.png"
+      ></v-img></v-avatar
+      ></a>
+      <h2 class="font-weight-light">WaterFall Project.</h2>
+      <p>By <a href="https://github.com/waterblock79" target="_blank">Waterblock79</a>, <a href="https://github.com/frank-782" target="_blank">Frank-782</a> and <a href="https://github.com/wuxian425" target="_blank">Bob0800</a> </p>
+      <p>Beautiful, Pure, Powerful, OpenSource.</p>
     </div>
     <v-divider></v-divider>
-    <v-subheader class="ml-3">Settings</v-subheader>
+    <v-subheader class="ml-3">Path</v-subheader>
     <v-list class="ml-3">
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title>ADB.exe 路径</v-list-item-title>
+          <v-list-item-title>ADB Path</v-list-item-title>
           <v-text-field
             dense
             v-model="adbPath"
@@ -25,7 +28,7 @@
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title>FASTBOOT.exe 路径</v-list-item-title>
+          <v-list-item-title>FASTBOOT Path</v-list-item-title>
           <v-text-field
             dense
             v-model="fastbootPath"
