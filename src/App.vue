@@ -51,12 +51,7 @@
               src="https://upload.cc/i1/2021/05/23/82jZQR.png"
               ></v-img>			  
             </v-list-item-avatar>
-			<v-text>瀑布安卓设备管理器</v-text>
-            <v-list-item-content>
-              <template v-if="devices.length > 0">
-                {{ devices[deviceChosen].title }}
-              </template>
-            </v-list-item-content>
+			<v-text>Waterfall Project</v-text>
           </v-list-item>
           <!--Functions-->
           <v-list-item
@@ -113,7 +108,7 @@
             连接设备后，请点击<v-icon color="white" class="mx-2"
               >mdi-cached</v-icon
             >刷新设备列表。<br />
-            若刷新后仍未出现您的设备，请确保设备稳定连接电脑并打开了开发者模式：<br />
+            若刷新后仍未出现您的设备，请确保设备用可连接的“传输线”稳定连接电脑并打开了开发者模式：<br />
             Step1.进入「设置」中的「关于手机」，连续点击十次「安卓版本号」。<br />
             Step2.进入「开发者选项」（ 请善用设置中的「搜索」功能
             ），确保其中的「USB调试」功能已开启。<br />
@@ -132,7 +127,7 @@
         <div class="dialog-content card">
           <span class="card-title">Wifi连结</span>
           <div class="card-content flex">
-            <input type="text" v-model="wirelessConnectAddress" placeholder="请输入IP地址:端口号" class="flex-grow"/>
+            <input type="text" v-model="wirelessConnectAddress" placeholder="请输入Wifi IP" class="flex-grow"/>
           </div>
           <div class="card-active">
             <button class="color-primary" @click="showWirelessConnect=false">取消</button>
@@ -249,7 +244,7 @@
                   </template>
                 </v-stepper-content>
                 <v-stepper-content step="4">
-                  配置完成！请重新启动本应用！
+                  配置完成，请重新启动本应用！
                 </v-stepper-content>
               </v-stepper-items>
             </v-stepper>
@@ -289,7 +284,7 @@ export default {
       deviceChosen: "0",
       functionChosen: 0,
       appFunctions: [
-        { text: "安装APK 管理", icon: "mdi-application" },
+        { text: "手机安装管理", icon: "mdi-application" },
         { text: "手机档案管理", icon: "mdi-file" },
         { text: "Fastboot刷机", icon: "mdi-android-debug-bridge", disable: true },
       ],
