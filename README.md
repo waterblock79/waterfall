@@ -33,7 +33,7 @@ yarn electron:build
 
 ## 成为开发者
 
-你需要先[安装 Git 环境。]   (https://git-scm.com/downloads)   
+你需要先[安装 Git 环境。](https://git-scm.com/downloads)   
 下载后，我推荐使用[乌龟Git](https://tortoisegit.org/download/)方便使用。   
 观看使用[教程1](https://blog.csdn.net/jdsjlzx/article/details/51098588)，[教程2](https://blog.csdn.net/awake720/article/details/95897477)   
 
