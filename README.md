@@ -15,6 +15,7 @@ Waterfal Project 是一个对新手友好的 Android 设备管理工具。
 npm install --global yarn
 :: 安装 Vue
 npm install vue
+```
 
 ### 运行
 
