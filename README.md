@@ -4,6 +4,7 @@ Waterfal Project 是一个对新手友好的 Android 设备管理工具。
 
 ## 运行与构建
 
+### 以下是非Realese版
 要运行 Waterfall Project ，您需要先安装 Nodejs 环境。   
 [官方下载](https://nodejs.org/zh-cn/download/)   
 [更换国内下载源提速教程](https://segmentfault.com/a/1190000023314583)   
@@ -17,20 +18,21 @@ npm install --global yarn
 npm install vue
 ```
 
-### 运行
+#### 运行
 
 ```
 yarn install
 yarn electron:serve
 ```
 
-### 构建
+#### 构建
 
 ```
 yarn install
 yarn electron:build
 ```
-
+### Realese版
+只需安裝檔案即可
 ## 成为开发者
 
 你需要先[安装 Git 环境。](https://git-scm.com/downloads)   
