@@ -6,15 +6,14 @@
         type="text"
         class="center-y ml-3 mr-3 flex-grow"
         placeholder="搜索应用包名..."
+        v-model="searchInfo"
       />
       <button class="mr-3 center-y primary color-white">
         <input
           type="file"
           class="ghost"
           accept=".apk"
-          @change="
-            InstallAPK($event);
-          "
+          @change="InstallAPK($event)"
         />
         <span class="material-icons mr-2 center-y">library_add</span>
         安装应用
@@ -26,12 +25,12 @@
         <div class="dialog-content card">
           <span class="card-title">安装应用</span>
           <div class="card-content flex">
-            <span class="color-gray" style="width:100%"
+            <span class="color-gray" style="width: 100%"
               >{{ installAppProcess.Installed }} /
               {{ installAppProcess.All }}</span
             >
             <progress
-              style="width:100%;"
+              style="width: 100%"
               :value="installAppProcess.Installed"
               :max="installAppProcess.All"
             />
@@ -46,8 +45,8 @@
       </div>
     </transition>
     <div class="d-flex align-start">
-      <ul style="width:50%">
-      <sub>Appliction</sub>
+      <ul style="width: 50%">
+        <sub>Appliction</sub>
         <li
           v-for="(item, i) in appList"
           :key="i"
@@ -57,129 +56,134 @@
           "
           class="dense mt-1"
           :selected="appSelected == i"
-          :disabled="!item.match(searchInfo)"
+          v-show="item.match(searchInfo)"
         >
-          <span class="material-icons mr-4 color-gray">apps</span>
+          <span class="material-icons mr-4 color-gray">smartphone</span>
           <span class="color-black font-smaller">{{ item }}</span>
         </li>
       </ul>
-      <template v-if="appSelected != null">
-        <div class="mt-4 card" style="box-shadow:none">
-          <p class="mt-5 ml-5 card-title">{{ appList[appSelected] }}</p>
-          <div class="flex">
-            <button
-              class="primary color-white flex-grow mx-7"
-              style="width:100%"
-              @click="SaveAPK(appList[appSelected])"
-            >
-              <span class="material-icons mr-2">widgets</span>
-              提取
-            </button>
-            <button
-              class="flex-grow error color-white mx-7 my-3"
-              @click="
-                showUninstall = true;
-                agreeUninstall = false;
-                uninstalling = false;
-              "
-            >
-              <span class="material-icons mr-2">delete</span>
-              卸载<b>并清除数据</b>
-            </button>
-          </div>
-          <div class="mx-7">
-            <transition name="dialog">
-              <div class="dialog" v-show="showSaveApk">
-                <div class="dialog-overlay" />
-                <div class="dialog-content card">
-                  <span class="card-title">提取 APK 文件</span>
+      <div
+        class="mt-4 card mx-2 word-break-all"
+        style="box-shadow: none"
+        v-if="appSelected != null"
+      >
+        <p class="mt-5 ml-5 card-title">{{ appList[appSelected] }}</p>
+        <div class="flex">
+          <button
+            class="primary color-white flex-grow mx-7"
+            style="width: 100%"
+            @click="SaveAPK(appList[appSelected])"
+          >
+            <span class="material-icons mr-2">widgets</span>
+            提取
+          </button>
+          <button
+            class="flex-grow error color-white mx-7 my-3"
+            @click="
+              showUninstall = true;
+              agreeUninstall = false;
+              uninstalling = false;
+            "
+          >
+            <span class="material-icons mr-2">delete</span>
+            卸载<b>并清除数据</b>
+          </button>
+        </div>
+        <div class="mx-7">
+          <transition name="dialog">
+            <div class="dialog" v-show="showSaveApk">
+              <div class="dialog-overlay" />
+              <div class="dialog-content card">
+                <span class="card-title">提取 APK 文件</span>
+                <div class="card-content">
+                  <b>
+                    文件将保存到
+                    <code>{{
+                      require("child_process").execSync("echo %cd%")
+                    }}</code>
+                  </b>
+                  <p style="font-family: Consolas">{{ saveApkInfo }}</p>
+                </div>
+                <div class="card-active">
+                  <button class="color-primary" @click="showSaveApk = false">
+                    关闭
+                  </button>
+                </div>
+              </div>
+            </div>
+          </transition>
+          <transition name="dialog">
+            <div class="dialog" v-show="showUninstall">
+              <div class="dialog-overlay" />
+              <div class="dialog-content card">
+                <span class="card-title">卸载应用</span>
+                <template v-if="!uninstalling">
                   <div class="card-content">
-                    <b>
-                      文件将保存到
-                      <code>{{
-                        require("child_process").execSync("echo %cd%")
-                      }}</code>
-                    </b>
-                    <p style="font-family: Consolas">{{ saveApkInfo }}</p>
+                    <b> 您将在卸载后失去您的应用和应用信息，依然继续？ </b>
+                    <br />
+                    <input
+                      type="checkbox"
+                      v-model="agreeUninstall"
+                      class="center-y"
+                    />
+                    我已知晓并仍然准备继续
                   </div>
-                  <div class="card-active">
-                    <button class="color-primary" @click="showSaveApk = false">
-                      关闭
-                    </button>
+                </template>
+                <template v-if="uninstalling">
+                  <div class="card-content">
+                    <p style="font-family: Consolas">
+                      {{ uninstallAppInfo }}
+                    </p>
                   </div>
+                </template>
+                <div class="card-active">
+                  <template v-if="!uninstalling"
+                    ><button
+                      class="color-error"
+                      type="button"
+                      :disabled="!agreeUninstall"
+                      @click="UninstallAPK(appList[appSelected])"
+                    >
+                      卸载
+                    </button></template
+                  >
+                  <button
+                    class="color-primary"
+                    @click="showUninstall = false"
+                    color="primary"
+                    text
+                  >
+                    关闭
+                  </button>
                 </div>
               </div>
-            </transition>
-            <transition name="dialog">
-              <div class="dialog" v-show="showUninstall">
-                <div class="dialog-overlay" />
-                <div class="dialog-content card">
-                  <span class="card-title">卸载应用</span>
-                  <template v-if="!uninstalling">
-                    <div class="card-content">
-                      <b> 您将在卸载后失去您的应用和应用信息，依然继续？ </b>
-                      <br />
-                      <input
-                        type="checkbox"
-                        v-model="agreeUninstall"
-                        class="center-y"
-                      />
-                      我已知晓并仍然准备继续
-                    </div>
-                  </template>
-                  <template v-if="uninstalling">
-                    <div class="card-content">
-                      <p style="font-family: Consolas">
-                        {{ uninstallAppInfo }}
-                      </p>
-                    </div>
-                  </template>
-                  <div class="card-active">
-                    <template v-if="!uninstalling"
-                      ><button
-                        class="color-error"
-                        type="button"
-                        :disabled="!agreeUninstall"
-                        @click="UninstallAPK(appList[appSelected])"
-                      >
-                        卸载
-                      </button></template
-                    >
-                    <button
-                      class="color-primary"
-                      @click="showUninstall = false"
-                      color="primary"
-                      text
-                    >
-                      关闭
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </transition>
+            </div>
+          </transition>
+        </div>
+        <div>
+          <div class="mx-3">
+            <span class="mx-3 material-icons color-gray">update</span>
+            <span>版本</span> {{ appInfoFormatted["version"] }}
           </div>
-          <div>
-            <div class="mx-3">
-              <span class="mx-3 material-icons color-gray">update</span>
-              <span>版本</span> {{ appInfoFormatted["version"] }}
-            </div>
-            <div class="my-2 mx-3">
-              <span class="mx-3 material-icons color-gray">developer_mode</span>
-              <span>SDK 版本</span>
-              {{ appInfoFormatted["targetSdk"] }}
-            </div>
-            <div class="mx-3">
-              <span class="mx-3 material-icons color-gray">verified_user</span>
-              <span class="mr-2">已请求权限</span>
-              <div class="ml-8 mt-3 font-mono" v-for="(item, i) in appInfoFormatted['permissions']"
-                  :key="i">
-                  {{ item }}
-                  <br/>
-              </div>
+          <div class="my-2 mx-3">
+            <span class="mx-3 material-icons color-gray">developer_mode</span>
+            <span>SDK 版本</span>
+            {{ appInfoFormatted["targetSdk"] }}
+          </div>
+          <div class="mx-3">
+            <span class="mx-3 material-icons color-gray">verified_user</span>
+            <span class="mr-2">已请求权限</span>
+            <div
+              class="ml-8 mt-3 font-mono"
+              v-for="(item, i) in appInfoFormatted['permissions']"
+              :key="i"
+            >
+              {{ item }}
+              <br />
             </div>
           </div>
         </div>
-      </template>
+      </div>
     </div>
   </div>
 </template>
@@ -193,7 +197,7 @@ export default {
 
   props: ["deviceName"],
 
-  data: function() {
+  data: function () {
     return {
       adb: localStorage.getItem("ADBPath"),
       fastboot: localStorage.getItem("FastbootPath"),
@@ -217,12 +221,12 @@ export default {
     };
   },
 
-  created: function() {
+  created: function () {
     this.GetAPKList();
   },
 
   methods: {
-    GetAPKList: function() {
+    GetAPKList: function () {
       this.appList = [];
       exec(
         `${this.adb} -s ${this.deviceName} shell pm list package`,
@@ -234,7 +238,7 @@ export default {
         }
       );
     },
-    GetAPPInfo: function(p) {
+    GetAPPInfo: function (p) {
       this.appInfoFormatted = {};
       exec(
         `${this.adb} -s ${this.deviceName} shell dumpsys package ${p}`,
@@ -265,7 +269,7 @@ export default {
         }
       );
     },
-    InstallAPK: function(e) {
+    InstallAPK: function (e) {
       let file = e.target.files;
       this.showInstall = true;
       this.installAppProcess.Installed = 0;
@@ -281,12 +285,12 @@ export default {
           }
         );
       });
-      while(this.installAppProcess.Installed==this.installAppProcess.All){
+      while (this.installAppProcess.Installed == this.installAppProcess.All) {
         this.GetAPKList();
         return;
       }
     },
-    SaveAPK: function(p) {
+    SaveAPK: function (p) {
       this.showSaveApk = true;
       this.saveApkInfo = "";
       let apkPath = execSync(
@@ -302,7 +306,7 @@ export default {
         }
       );
     },
-    UninstallAPK: function(p) {
+    UninstallAPK: function (p) {
       this.uninstallAppInfo = "";
       this.uninstalling = true;
       exec(
@@ -314,7 +318,7 @@ export default {
         }
       );
     },
-    DisableAPP: function(p) {
+    DisableAPP: function (p) {
       exec(
         `${this.adb} -s ${this.deviceName} shell pm disable-user ${p}`,
         (stdout, stderr) => {

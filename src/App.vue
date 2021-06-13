@@ -82,7 +82,7 @@
     </v-navigation-drawer>
     <v-main>
       <!--Manage your device-->
-      <template v-if="devices.length > 0 && functionChosen != 4">
+      <template v-if="devices.length > 0 && functionChosen != null">
         <div>
           <template v-if="functionChosen == 0">
             <about-devices :deviceName="devices[deviceChosen].title" />
@@ -93,10 +93,25 @@
           <template v-else-if="functionChosen == 2">
             <file-manager :deviceName="devices[deviceChosen].title" />
           </template>
+          <template v-else-if="functionChosen == 3">
+            <fastboot :deviceName="devices[deviceChosen].title" />
+          </template>
+          <template v-else-if="functionChosen == 4">
+            <more :deviceName="devices[deviceChosen].title" />
+          </template>
+          <template v-else-if="functionChosen == 5">
+            <about-project />
+          </template>
         </div>
       </template>
+      <template v-else-if="devices.length > 0 && functionChosen == null">
+        <v-container fill-height justify-center>
+          <v-icon style="font-size: 300%"> mdi-compass </v-icon>
+          <div class="text-h5 ml-3">打开侧边栏，并开始探索</div>
+        </v-container>
+      </template>
       <!--No device-->
-      <template v-else-if="devices.length == 0 && functionChosen != 4">
+      <template v-else-if="devices.length == 0 && functionChosen != 5">
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-container fill-height justify-center v-bind="attrs" v-on="on">
@@ -115,10 +130,11 @@
           </span>
         </v-tooltip>
       </template>
-      <!--About Project-->
-      <template v-else>
+      <!--No Chosen-->
+      <template v-else-if="functionChosen == 5">
         <about-project />
       </template>
+      <!--About Project-->
       <!--End-->
     </v-main>
     <transition name="dialog">
@@ -127,11 +143,23 @@
         <div class="dialog-content card">
           <span class="card-title">无线连接到设备</span>
           <div class="card-content flex">
-            <input type="text" v-model="wirelessConnectAddress" placeholder="IP地址:端口" class="flex-grow"/>
+            <input
+              type="text"
+              v-model="wirelessConnectAddress"
+              placeholder="IP地址:端口"
+              class="flex-grow"
+            />
           </div>
           <div class="card-active">
-            <button class="color-primary" @click="showWirelessConnect=false">取消</button>
-            <button class="color-primary" @click="WirelessConnect(wirelessConnectAddress)">连接</button>
+            <button class="color-primary" @click="showWirelessConnect = false">
+              取消
+            </button>
+            <button
+              class="color-primary"
+              @click="WirelessConnect(wirelessConnectAddress)"
+            >
+              连接
+            </button>
           </div>
         </div>
       </div>
@@ -226,7 +254,7 @@
                   <template
                     v-if="
                       this.selectFastboot.path != undefined &&
-                        this.selectAdb.path != undefined
+                      this.selectAdb.path != undefined
                     "
                   >
                     <v-card-actions>
@@ -265,6 +293,8 @@ import AboutDevices from "./components/AboutDevices.vue";
 import AboutProject from "./components/AboutProject.vue";
 import ApkManager from "./components/APKManager.vue";
 import FileManager from "./components/FileManager.vue";
+import Fastboot from "./components/Fastboot.vue";
+import More from "./components/More.vue";
 
 export default {
   name: "App",
@@ -274,19 +304,23 @@ export default {
     AboutProject,
     ApkManager,
     FileManager,
+    Fastboot,
+    More,
   },
 
-  data: function() {
+  data: function () {
     return {
       adb: null,
       fastboot: null,
-      devices: [],
+      devices: [{ status: "null" }],
       deviceChosen: "0",
-      functionChosen: 0,
+      showDevicesChoose: false,
+      functionChosen: null,
       appFunctions: [
-        { text: "APK Manager", icon: "mdi-application" },
-        { text: "Files Manager", icon: "mdi-file" },
-        { text: "Fastboot", icon: "mdi-android-debug-bridge", disable: true },
+        { text: "APK Manager", icon: "apps" },
+        { text: "Files Manager", icon: "insert_drive_file" },
+        { text: "Fastboot", icon: "android" },
+        { text: "More", icon: "more_horiz" },
       ],
       adbInstalled: true,
       fastbootInstalled: true,
@@ -306,7 +340,7 @@ export default {
     };
   },
 
-  created: function() {
+  created: function () {
     //Config Automatically If No Config
     if (
       localStorage.getItem("ADBPath") == null ||
@@ -321,6 +355,13 @@ export default {
     //Check
     this.CheckADB();
     this.GetDevices();
+    let sto = () => {
+      setTimeout(() => {
+        this.GetDevices();
+        sto();
+      }, 3000);
+    };
+    sto();
   },
 
   watch: {
@@ -330,11 +371,11 @@ export default {
   },
 
   methods: {
-    CloseWindow: function() {
+    CloseWindow: function () {
       const { ipcRenderer } = require("electron");
       ipcRenderer.send("app:quit");
     },
-    GetDevices: function() {
+    GetDevices: function () {
       this.devices = [];
       execSync(`${this.adb} devices`)
         .toString()
@@ -348,14 +389,25 @@ export default {
             });
           }
         });
-      //error:"device undefind" if using ForEach
+      execSync(`${this.fastboot} devices`)
+        .toString()
+        .split("\n")
+        .forEach((item, index) => {
+          if (!item.match("List of devices attached") && item.length > 1) {
+            this.devices.push({
+              title: item.split("	")[0],
+              status: "fastboot",
+              index: index + this.devices.length,
+            });
+          }
+        });
       return;
     },
-    ChooseDevice: function(index) {
+    ChooseDevice: function (index) {
       this.deviceChosen = index;
       return;
     },
-    CheckADB: function() {
+    CheckADB: function () {
       exec(`${this.adb} --version`, (error) => {
         if (error) {
           this.adbInstalled = false;
@@ -374,14 +426,14 @@ export default {
       });
       return;
     },
-    GetUserInputPath: function() {
+    GetUserInputPath: function () {
       localStorage.setItem("ADBPath", `"` + this.selectAdb.path + `"`);
       localStorage.setItem(
         "FastbootPath",
         `"` + this.selectFastboot.path + `"`
       );
     },
-    WirelessConnect: function(e){
+    WirelessConnect: function (e) {
       exec(`${this.adb} connect ${e}`, (error) => {
         if (error) {
           alert(`Σ(っ °Д °;)っ⚠\n${error}`);
@@ -392,7 +444,7 @@ export default {
         return;
       });
     },
-    GetOS: function() {
+    GetOS: function () {
       switch (platform) {
         case "darwin":
           return "MacOS";

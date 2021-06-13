@@ -28,10 +28,13 @@ li:active {
   background: rgba(0, 0, 0, 15%);
 }
 
-li[selected]{
-  background-color:rgb(25,118,210,20%);
-  font-weight: 500;
+li[selected] {
+  background-color: rgb(25, 118, 210, 20%);
   transition: background-color 0.15s;
+}
+
+.li-round-right {
+  border-radius: 0% 60px 60px 0%;
 }
 
 /* Button : <button> */
@@ -68,11 +71,15 @@ button:active {
   background: none;
 }
 
-button[disabled]{
-  color:rgba(128, 128, 128, 0.65) !important;
+.button-block {
+  display: inline-block;
 }
 
-button[disabled]:hover{
+button[disabled] {
+  color: rgba(128, 128, 128, 0.65) !important;
+}
+
+button[disabled]:hover {
   background: none;
 }
 
@@ -135,6 +142,8 @@ input[type="text"] {
   outline: none;
   border: none;
   padding: 2px;
+  font-size: 1.15em;
+  font-family: Consolas, Arial;
   border-bottom: solid 1.75px;
   border-bottom-color: rgb(0, 0, 0, 15%);
   transition: border-bottom-color 0.3s;
@@ -144,10 +153,10 @@ input[type="text"]:focus {
   border-bottom-color: #1976d2;
 }
 
-input[type="checkbox"]{
+input[type="checkbox"] {
   height: 1em;
   width: 1em;
-  background-color:#1976d2;
+  background-color: #1976d2;
 }
 
 /* Card */
@@ -193,33 +202,40 @@ input[type="checkbox"]{
 
 /* Flex */
 
-.flex{
+.flex {
   display: flex;
   flex-wrap: wrap;
 }
 
-.flex-grow{
-  flex-grow:1;
+.flex-grow {
+  flex-grow: 1;
 }
 
-.flex-grow-half{
-  flex-grow:.5;
+.flex-grow-half {
+  flex-grow: 0.5;
 }
 
 /* Progress */
 
-progress{
-  border:none;
+progress {
+  border: none;
   height: 0.45em;
 }
 
-progress::-webkit-progress-bar
-{
-       background-color:#bad2ec;
+progress::-webkit-progress-bar {
+  background-color: #bad2ec;
 }
-progress::-webkit-progress-value
-{
-     background-color:#1867c0;
+
+progress::-webkit-progress-value {
+  background-color: #1867c0;
+}
+
+/* Select : <ul class="select"> */
+
+.select {
+    width:20em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 /* Sth else */
@@ -227,6 +243,11 @@ progress::-webkit-progress-value
 .pull-right {
   float: right;
   text-align: right;
+}
+
+.center-x {
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 .center-y {
@@ -237,12 +258,32 @@ progress::-webkit-progress-value
   font-family: Consolas, "Courier New", Courier, monospace;
 }
 
+.word-break-all {
+  word-break: break-all;
+}
+
 .material-icons {
   user-select: none;
   vertical-align: middle;
 }
 
+/* HR */
+hr {
+  height: 1.5px;
+  background: #d6d6d6;
+  border-style: inset;
+  border-width: 0px;
+  margin: none;
+}
+
+/* Sub */
+
+sub {
+  color: gray;
+}
+
 /* Padding and Margin - Top,Bottom,Left,Right - between 0 and 64*/
+
 @for $i from 1 through 16 {
   /* Margin */
   .m#{$i} {
@@ -284,47 +325,44 @@ progress::-webkit-progress-value
 
 /* Font Style */
 
-.font-light{
-  font-weight:lighter;
+.font-light {
+  font-weight: lighter;
 }
 
-.font-bold{
-  font-weight:bold;
+.font-bold {
+  font-weight: bold;
 }
 
-.font-bolder{
+.font-bolder {
   font-weight: bolder;
 }
 
-.font-small{
+.font-small {
   font-size: small;
 }
 
-.font-smaller{
+.font-smaller {
   font-size: smaller;
 }
 
-.font-large{
+.font-large {
   font-size: large;
 }
 
-.font-larger{
+.font-larger {
   font-size: larger;
 }
 
 $color: (white, #ffffff), (gray, gray), (primary, #1976d2), (warning, #ffc107),
   (error, #f44336), (black, #010101);
-
 @each $name, $value in $color {
   .#{$name} {
     background: ($value) !important;
     transition: opacity 0.3s;
   }
-
   .#{$name}:hover {
     opacity: 0.9;
   }
-
   .#{$name}:active {
     transition: opacity 0.5s;
     opacity: 0.7;
@@ -332,7 +370,7 @@ $color: (white, #ffffff), (gray, gray), (primary, #1976d2), (warning, #ffc107),
 }
 
 @each $name, $value in $color {
-  .color-#{$name} {
+  .color-#{"" + $name} {
     color: ($value) !important;
   }
 }
@@ -351,19 +389,19 @@ $color: (white, #ffffff), (gray, gray), (primary, #1976d2), (warning, #ffc107),
 
 /* Translation */
 
-.dialog-enter-active{
-  animation: dialog-card-in 0.25s cubic-bezier(.25,.75,.25,1);
+.dialog-enter-active {
+  animation: dialog-card-in 0.25s cubic-bezier(0.25, 0.75, 0.25, 1);
 }
 
-.dialog-leave-active{
+.dialog-leave-active {
   animation: dialog-card-in 0.25s reverse;
 }
 
-.bottom-enter-active{
-  animation: dialog-card-in 0.15s cubic-bezier(.25,.75,.25,1);
+.bottom-enter-active {
+  animation: dialog-card-in 0.15s cubic-bezier(0.25, 0.75, 0.25, 1);
 }
 
-.bottom-leave-active{
+.bottom-leave-active {
   animation: dialog-card-in 0.15s reverse;
 }
 

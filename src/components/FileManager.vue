@@ -54,7 +54,7 @@
         <div class="dialog" v-show="contextmenu.show">
           <div class="dialog-overlay" @click="contextmenu.show = false" />
           <div class="dialog-content card" style="width:50%;">
-            <p class="card-title">{{ contextmenu.item.name }}</p>
+            <p class="card-title word-break-all">{{ contextmenu.item.name }}</p>
             <!-- Size -->
 
             <p v-show="contextmenu.item.type == 'file'">
