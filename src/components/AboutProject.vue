@@ -4,14 +4,14 @@
 	<a href="https://waterfall.js.org/" target="_blank">
       <v-avatar
         ><v-img
-  max-height="300"
-  max-width="500"
+  max-height="900"
+  max-width="1500"
   src="https://upload.cc/i1/2021/05/23/82jZQR.png"
       ></v-img></v-avatar
       ></a>
-      <h2 class="font-weight-light">WaterFall Project.</h2>
-      <p>By <a href="https://github.com/waterblock79" target="_blank">Waterblock79</a>, <a href="https://github.com/frank-782" target="_blank">Frank-782</a> and <a href="https://github.com/wuxian425" target="_blank">Bob0800</a> </p>
-      <p>Beautiful, Pure, Powerful, OpenSource.</p>
+      <h1 class="font-weight-light">Waterfall Project</h1>
+      <p></p>
+      <p>对新手友好的 Android 设备管理工具</p>
     </div>
     <v-divider></v-divider>
     <v-subheader class="ml-3">Path</v-subheader>
