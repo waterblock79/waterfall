@@ -1,7 +1,7 @@
 {
   "name": "WaterfallProject",
   "author": "waterblock79",
-  "version": "0.2.1",
+  "version": "0.3.1",
   "description": "Waterfall Project Alpha.",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -46,7 +46,7 @@
     },
     "extends": [
       "plugin:vue/essential",
-      "eslint:recommended"
+	  "eslint:recommended"
     ],
     "parserOptions": {
       "parser": "babel-eslint"
